@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 
 public class HomeFragment extends Fragment {
@@ -56,9 +58,9 @@ public class HomeFragment extends Fragment {
         if(currentUser!=null)
         {
             userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
-            deviceRef=FirebaseDatabase.getInstance().getReference("Devices");
+            deviceRef=userRef.child("devices");
             loadUserData();
-            loadDevices();
+            setupRoomTabs(view);
 
         }
 
@@ -66,8 +68,26 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
+    private void setupRoomTabs(View view) {
+        TabLayout tabLayout=view.findViewById(R.id.tabLayoutRooms);
+        String[] rooms={"Living Room","Bedroom","Kitchen","Washroom", "Drawing Room", "Dining Room","TV Lounge"};
+        for(String room:rooms)
+        {
+            tabLayout.addTab(tabLayout.newTab().setText(room));
+        }
+        tabLayout.addOnTabSelectedListener(new com.google.android.material.tabs.TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(com.google.android.material.tabs.TabLayout.Tab tab) {
+                loadDevices(tab.getText().toString()); // Reload devices for this room
+            }
+            @Override public void onTabUnselected(com.google.android.material.tabs.TabLayout.Tab tab) {}
+            @Override public void onTabReselected(com.google.android.material.tabs.TabLayout.Tab tab) {}
+        });
+        loadDevices("Living Room");
+    }
+
     private void showAddDeviceDialog() {
-        String[] categories={"Smart TV", "Smart Fridge", "Lights", "ACs"};
+        String[] categories={"Smart TV", "Smart Fridge", "Lightings", "Air Condition","Blinds"};
         AlertDialog.Builder builder= new AlertDialog.Builder(getContext());
         builder.setTitle("Select Device Category");
         builder.setItems(categories,((dialog, which) -> {
@@ -78,7 +98,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void showRoomSelectionDialog(String category) {
-        String[] rooms = {"Bedroom", "Drawing Room", "Dining Room", "TV Lounge", "Kitchen", "Washroom"};
+        String[] rooms = {"Living Room","Bedroom", "Drawing Room", "Dining Room", "TV Lounge", "Kitchen", "Washroom"};
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Select Room");
         builder.setItems(rooms, (dialog, which) -> {
@@ -95,7 +115,7 @@ public class HomeFragment extends Fragment {
         else if(category.equals("Smart Fridge"))power=0.5;
         else if(category.equals("Smart TV"))power=0.2;
         else power=0.05;
-        Device newDevice= new Device(id,room,category,category,false,power);
+        Device newDevice= new Device(id,room,category,category,false,power,1);
         if(id!=null)
         {
             deviceRef.child(id).setValue(newDevice).addOnSuccessListener(aVoid->
@@ -123,33 +143,45 @@ public class HomeFragment extends Fragment {
            }
        });
     }
-    private void loadDevices()
+    private void loadDevices(String roomName)
     {
         deviceRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 list.clear();
-                double totalPower=0;
-                for(DataSnapshot ds: snapshot.getChildren())
-                {
-                    Device device=ds.getValue(Device.class);
-                    if(device!=null)
-                    {
-                        list.add(device);
-                        if(device.isStatus())
-                        {
-                            totalPower+=device.getPowerConsumption();
+                HashMap<String,Device> groupMap=new HashMap<>();
+                double totalPower = 0;
+
+                for (DataSnapshot ds : snapshot.getChildren()) {
+                    Device device = ds.getValue(Device.class);
+                    if (device != null) {
+
+                        if (device.getRoomId().equals(roomName)) {
+                            String category= device.getType();
+                            if(groupMap.containsKey(category))
+                            {
+                                Device existing=groupMap.get(category);
+                                existing.setCount(existing.getCount()+1);
+                            }
+                            else
+                            {
+                                device.setCount(1);
+                                groupMap.put(category,device);
+                            }
+                        }
+                        // Calculate power for ALL rooms to keep expenses accurate
+                        if (device.isStatus()) {
+                            totalPower += device.getPowerConsumption();
                         }
                     }
                 }
+                list.addAll(groupMap.values());
                 adapter.notifyDataSetChanged();
                 updateExpense(totalPower);
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
+            public void onCancelled(@NonNull DatabaseError error) {}
         });
     }
     private void updateExpense(double totalPower) {

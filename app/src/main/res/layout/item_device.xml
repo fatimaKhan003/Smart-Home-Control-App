@@ -4,17 +4,20 @@
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp"
-    app:cardCornerRadius="20dp">
+    android:id="@+id/deviceCard"
+    app:cardCornerRadius="24dp"
+    app:cardElevation="0dp"
+    >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="16dp">
+        android:padding="20dp">
 
         <ImageView
             android:id="@+id/imgDevice"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:src="@drawable/ic_launcher_foreground"/>
         <TextView
             android:id="@+id/txtDeviceName"
@@ -23,7 +26,16 @@
             android:text="Device"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="16dp"/>
+        <TextView
+            android:id="@+id/txtDeviceCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0 Devices"
+            android:textSize="12sp"
+            android:textColor="#757575"
+            android:layout_marginTop="2dp"/>
+
         <TextView
             android:id="@+id/txtRoomName"
             android:layout_width="wrap_content"
@@ -43,7 +55,13 @@
             android:id="@+id/switchDevice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"/>
+            android:layout_marginTop="16dp"
+            android:showText="true"
+            android:textOff="Off"
+            android:textOn="On"
+            app:thumbTint="@android:color/white"
+            app:trackTint="@color/switch_track_selector"
+            app:useMaterialThemeColors="false"/>
     </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

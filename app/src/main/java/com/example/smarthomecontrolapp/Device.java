@@ -7,11 +7,12 @@ public class Device {
     private String type;
     private boolean status;
     private double powerConsumption;
+    private int count;
 
     public Device() {}
 
     public Device(String deviceId, String roomId, String deviceName,
-                  String type, boolean status, double powerConsumption) {
+                  String type, boolean status, double powerConsumption,int count) {
 
         this.deviceId = deviceId;
         this.roomId = roomId;
@@ -19,10 +20,19 @@ public class Device {
         this.type = type;
         this.status = status;
         this.powerConsumption = powerConsumption;
+        this.count=count;
     }
 
     public String getDeviceId() {
         return deviceId;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
     }
 
     public void setDeviceId(String deviceId) {

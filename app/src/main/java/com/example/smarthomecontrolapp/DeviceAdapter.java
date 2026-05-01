@@ -24,7 +24,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         ImageView ivDevice;
-        TextView tvDeviceName, tvConsumption;
+        TextView tvDeviceName, tvConsumption, tvRoomname;
         SwitchMaterial switchDevice;
         public ViewHolder(View itemView)
         {super(itemView);
@@ -32,6 +32,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             tvDeviceName=itemView.findViewById(R.id.txtDeviceName);
             tvConsumption=itemView.findViewById(R.id.txtConsumption);
             switchDevice=itemView.findViewById(R.id.switchDevice);
+            tvRoomname=itemView.findViewById(R.id.txtRoomName);
 
         }
 
@@ -50,6 +51,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     holder.tvDeviceName.setText(device.getDeviceName());
     holder.tvConsumption.setText(device.getPowerConsumption()+ " W");
     holder.switchDevice.setChecked(device.isStatus());
+    holder.tvRoomname.setText(device.getRoomId());
 }
 @Override
     public int getItemCount()

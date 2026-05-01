@@ -1,5 +1,6 @@
 package com.example.smarthomecontrolapp;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -44,6 +45,8 @@ public class HomeFragment extends Fragment {
         recyclerDevices=view.findViewById(R.id.recyclerDevices);
         tvWelcome=view.findViewById(R.id.tvWelcome);
         tvExpense=view.findViewById(R.id.tvExpense);
+        View fabAdd=view.findViewById(R.id.fabAddDevice);
+        fabAdd.setOnClickListener(v->showAddDeviceDialog());
         mAuth= FirebaseAuth.getInstance();
         currentUser=mAuth.getCurrentUser();
         list=new ArrayList<>();
@@ -52,13 +55,54 @@ public class HomeFragment extends Fragment {
         recyclerDevices.setAdapter(adapter);
         if(currentUser!=null)
         {
-            userRef= FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+            userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
+            deviceRef=FirebaseDatabase.getInstance().getReference("Devices");
             loadUserData();
+            loadDevices();
 
         }
-        deviceRef=FirebaseDatabase.getInstance().getReference("Devices");
-        loadDevices();
+
+
         return view;
+    }
+
+    private void showAddDeviceDialog() {
+        String[] categories={"Smart TV", "Smart Fridge", "Lights", "ACs"};
+        AlertDialog.Builder builder= new AlertDialog.Builder(getContext());
+        builder.setTitle("Select Device Category");
+        builder.setItems(categories,((dialog, which) -> {
+            String selectedCategory=categories[which];
+            showRoomSelectionDialog(selectedCategory);
+        }));
+        builder.show();
+    }
+
+    private void showRoomSelectionDialog(String category) {
+        String[] rooms = {"Bedroom", "Drawing Room", "Dining Room", "TV Lounge", "Kitchen", "Washroom"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+        builder.setTitle("Select Room");
+        builder.setItems(rooms, (dialog, which) -> {
+            String selectedRoom = rooms[which];
+            addDeviceToFirebase(category, selectedRoom);
+        });
+        builder.show();
+    }
+
+    private void addDeviceToFirebase(String category, String room) {
+        String id=deviceRef.push().getKey();
+        double power=0;
+        if(category.equals("ACs")) power=1.5;
+        else if(category.equals("Smart Fridge"))power=0.5;
+        else if(category.equals("Smart TV"))power=0.2;
+        else power=0.05;
+        Device newDevice= new Device(id,room,category,category,false,power);
+        if(id!=null)
+        {
+            deviceRef.child(id).setValue(newDevice).addOnSuccessListener(aVoid->
+            {
+
+            });
+        }
     }
 
     private void loadUserData() {

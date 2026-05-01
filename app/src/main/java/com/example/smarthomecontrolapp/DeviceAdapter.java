@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
@@ -24,8 +25,9 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     public class ViewHolder extends RecyclerView.ViewHolder
     {
         ImageView ivDevice;
-        TextView tvDeviceName, tvConsumption, tvRoomname;
+        TextView tvDeviceName, tvConsumption, tvRoomname,tvDeviceCount;
         SwitchMaterial switchDevice;
+        MaterialCardView deviceCard;
         public ViewHolder(View itemView)
         {super(itemView);
             ivDevice=itemView.findViewById(R.id.imgDevice);
@@ -33,6 +35,8 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             tvConsumption=itemView.findViewById(R.id.txtConsumption);
             switchDevice=itemView.findViewById(R.id.switchDevice);
             tvRoomname=itemView.findViewById(R.id.txtRoomName);
+            tvDeviceCount=itemView.findViewById(R.id.txtDeviceCount);
+            deviceCard=itemView.findViewById(R.id.deviceCard);
 
         }
 
@@ -50,8 +54,45 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     Device device= list.get(pos);
     holder.tvDeviceName.setText(device.getDeviceName());
     holder.tvConsumption.setText(device.getPowerConsumption()+ " W");
-    holder.switchDevice.setChecked(device.isStatus());
+
     holder.tvRoomname.setText(device.getRoomId());
+    holder.tvDeviceCount.setText(device.getCount()+" Devices");
+
+    switch(device.getType())
+    {
+        case "Smart TV":
+            holder.ivDevice.setImageResource(R.drawable.ic_tv);
+            break;
+        case "Smart Fridge":
+            holder.ivDevice.setImageResource(R.drawable.ic_fridge);
+            break;
+        case "Lightings":
+            holder.ivDevice.setImageResource(R.drawable.ic_bulb);
+            break;
+        case "Air Condition":
+            holder.ivDevice.setImageResource(R.drawable.ic_ac);
+            break;
+        case "Blinds":
+            holder.ivDevice.setImageResource(R.drawable.ic_blinds);
+            break;
+        default:
+            holder.ivDevice.setImageResource(R.drawable.icon_home);
+            break;
+    }
+    holder.switchDevice.setChecked(device.isStatus());
+    if(device.isStatus())
+    {
+        holder.deviceCard.setCardBackgroundColor(android.graphics.Color.parseColor("#7B61FF"));
+        holder.tvDeviceName.setTextColor(android.graphics.Color.WHITE);
+        holder.tvDeviceCount.setTextColor(android.graphics.Color.parseColor("#E0E0E0"));
+        holder.ivDevice.setColorFilter(android.graphics.Color.WHITE);
+    } else {
+        holder.deviceCard.setCardBackgroundColor(android.graphics.Color.WHITE);
+        holder.tvDeviceName.setTextColor(android.graphics.Color.BLACK);
+        holder.tvDeviceCount.setTextColor(android.graphics.Color.GRAY);
+        holder.ivDevice.setColorFilter(android.graphics.Color.BLACK);
+    }
+
 }
 @Override
     public int getItemCount()

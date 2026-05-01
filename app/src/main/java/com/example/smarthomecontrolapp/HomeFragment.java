@@ -52,7 +52,8 @@ public class HomeFragment extends Fragment {
         recyclerDevices.setAdapter(adapter);
         if(currentUser!=null)
         {
-            userRef= FirebaseDatabase.getInstance().getReference("Users").child(currentUser.getUid());
+            userRef = FirebaseDatabase.getInstance().getReference("users").child(currentUser.getUid());
+
             loadUserData();
 
         }

@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "435246260686",
+    "firebase_url": "https://smarthomecontrola-default-rtdb.firebaseio.com",
+    "project_id": "smarthomecontrola",
+    "storage_bucket": "smarthomecontrola.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:435246260686:android:48dd1e0e6c365431568b9f",
+        "android_client_info": {
+          "package_name": "com.example.smarthomecontrolapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3I5ukEQZmFFOqg6ok6X4Jlnja1kkSYVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

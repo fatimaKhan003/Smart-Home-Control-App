@@ -14,4 +14,12 @@
     <color name="textDark">#242424</color>
     <color name="iconColor">#2C2C2C</color>
     <color name="green">#4CAF50</color>
+    <color name="tabBackground">#F1F3F5</color>
+    <color name="cardTodayCost">#C9A86A</color>
+    <color name="chartBarInactive">#F1F3F5</color>
+    <color name="chartBarActive">#4E5567</color>
+    <color name="barInactive">#D1D1D1</color>
+    <color name="barActive">#4E5567</color>
+    <color name="cardStatsBackground">#F5F7FA</color>
+    <color name="cardCostBackground">#2D3436</color>
 </resources>

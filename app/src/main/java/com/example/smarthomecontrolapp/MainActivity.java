@@ -32,18 +32,18 @@ BottomNavigationView bottomNav;
             {
                 selectedFragment=new HomeFragment();
             }
+            else if(id==R.id.nav_rooms)
+            {
+                selectedFragment=new RoomsFragment();
+            }
             else if(id== R.id.nav_energy)
             {
                 selectedFragment=new EnergyFragment();
 
             }
-            else if(id==R.id.nav_rooms)
+            else if (id==R.id.nav_details)
             {
-                selectedFragment=new RoomsFragment();
-            }
-            else if (id==R.id.nav_profile)
-            {
-                selectedFragment=new ProfileFragment();
+                selectedFragment=new DetailsFragment();
             }
             if(selectedFragment!= null)
             {

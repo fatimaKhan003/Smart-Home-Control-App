@@ -115,7 +115,6 @@ public class register extends AppCompatActivity {
                         // Step 2: Save user data to Realtime Database
                         // This creates the structure: users/{uid}/name, costRate, savingsTarget
                         saveUserToDatabase(user.getUid(), name, email);
-
                     } else {
                         setLoading(false);
                         String msg = task.getException() != null
@@ -132,8 +131,8 @@ public class register extends AppCompatActivity {
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("name", name);
         userMap.put("email", email);
-        userMap.put("costRate", 0.12);       // default electricity cost per KWH
-        userMap.put("savingsTarget", 500.0); // default savings target in $
+        userMap.put("electricityRate", 0.12);
+        userMap.put("savingsTarget", 500.0);
 
         mDatabase.child("users").child(uid)
                 .setValue(userMap)

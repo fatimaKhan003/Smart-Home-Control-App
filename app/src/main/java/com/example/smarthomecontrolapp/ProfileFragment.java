@@ -21,10 +21,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProfileFragment extends Fragment {
 
     private TextView tvName, tvEmail;
-    private EditText etRate, etTarget;
+    private EditText etRate, etTargetTV, etTargetFridge, etTargetLighting, etTargetAC, etTargetBlinds;
     private DatabaseReference userRef;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -37,7 +40,13 @@ public class ProfileFragment extends Fragment {
         tvName = view.findViewById(R.id.tvUserName);
         tvEmail = view.findViewById(R.id.tvUserEmail);
         etRate = view.findViewById(R.id.etRate);
-        etTarget = view.findViewById(R.id.etTarget);
+        
+        etTargetTV = view.findViewById(R.id.etTargetTV);
+        etTargetFridge = view.findViewById(R.id.etTargetFridge);
+        etTargetLighting = view.findViewById(R.id.etTargetLighting);
+        etTargetAC = view.findViewById(R.id.etTargetAC);
+        etTargetBlinds = view.findViewById(R.id.etTargetBlinds);
+
         View btnBack = view.findViewById(R.id.btnBack);
         View btnSave = view.findViewById(R.id.btnSave);
         View btnLogout = view.findViewById(R.id.btnLogout);
@@ -68,7 +77,13 @@ public class ProfileFragment extends Fragment {
                     if (user != null) {
                         if (user.getName() != null) tvName.setText(user.getName());
                         etRate.setText(String.valueOf(user.getElectricityRate()));
-                        etTarget.setText(String.valueOf(user.getSavingsTarget()));
+                        
+                        Map<String, Double> targets = user.getDeviceSavingsTargets();
+                        etTargetTV.setText(String.valueOf(targets.getOrDefault(DeviceType.SMART_TV.getDisplayName(), 50.0)));
+                        etTargetFridge.setText(String.valueOf(targets.getOrDefault(DeviceType.SMART_FRIDGE.getDisplayName(), 50.0)));
+                        etTargetLighting.setText(String.valueOf(targets.getOrDefault(DeviceType.LIGHTING.getDisplayName(), 50.0)));
+                        etTargetAC.setText(String.valueOf(targets.getOrDefault(DeviceType.AIR_CONDITION.getDisplayName(), 50.0)));
+                        etTargetBlinds.setText(String.valueOf(targets.getOrDefault(DeviceType.BLINDS.getDisplayName(), 50.0)));
                     }
                 }
             }
@@ -85,22 +100,30 @@ public class ProfileFragment extends Fragment {
     private void saveSettings() {
         if (userRef == null) return;
 
-        String rateStr = etRate.getText().toString();
-        String targetStr = etTarget.getText().toString();
-
-        if (rateStr.isEmpty() || targetStr.isEmpty()) {
-            Toast.makeText(getContext(), "Please fill all fields", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         try {
-            double rate = Double.parseDouble(rateStr);
-            double target = Double.parseDouble(targetStr);
+            double rate = Double.parseDouble(etRate.getText().toString());
+            
+            double targetTV = Double.parseDouble(etTargetTV.getText().toString());
+            double targetFridge = Double.parseDouble(etTargetFridge.getText().toString());
+            double targetLighting = Double.parseDouble(etTargetLighting.getText().toString());
+            double targetAC = Double.parseDouble(etTargetAC.getText().toString());
+            double targetBlinds = Double.parseDouble(etTargetBlinds.getText().toString());
+
+            Map<String, Double> targets = new HashMap<>();
+            targets.put(DeviceType.SMART_TV.getDisplayName(), targetTV);
+            targets.put(DeviceType.SMART_FRIDGE.getDisplayName(), targetFridge);
+            targets.put(DeviceType.LIGHTING.getDisplayName(), targetLighting);
+            targets.put(DeviceType.AIR_CONDITION.getDisplayName(), targetAC);
+            targets.put(DeviceType.BLINDS.getDisplayName(), targetBlinds);
+
+            double totalTarget = targetTV + targetFridge + targetLighting + targetAC + targetBlinds;
 
             userRef.child("electricityRate").setValue(rate);
-            userRef.child("savingsTarget").setValue(target)
+            userRef.child("deviceSavingsTargets").setValue(targets);
+            userRef.child("savingsTarget").setValue(totalTarget)
                     .addOnSuccessListener(aVoid -> Toast.makeText(getContext(), "Settings Saved", Toast.LENGTH_SHORT).show())
                     .addOnFailureListener(e -> Toast.makeText(getContext(), "Failed to save settings", Toast.LENGTH_SHORT).show());
+            
         } catch (NumberFormatException e) {
             Toast.makeText(getContext(), "Please enter valid numbers", Toast.LENGTH_SHORT).show();
         }

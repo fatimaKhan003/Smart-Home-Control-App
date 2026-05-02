@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="10dp" />
+            <solid android:color="@color/dividerGrey" />
+        </shape>
+    </item>
+    <!-- Total consumption of that type across all rooms (Light Blue) -->
+    <item android:id="@android:id/secondaryProgress">
+        <scale android:scaleWidth="100%">
+            <shape>
+                <corners android:radius="10dp" />
+                <solid android:color="@color/lightAccent" />
+            </shape>
+        </scale>
+    </item>
+    <!-- Consumption in the specific room (Dark Blue) -->
+    <item android:id="@android:id/progress">
+        <scale android:scaleWidth="100%">
+            <shape>
+                <corners android:radius="10dp" />
+                <solid android:color="@color/mainAccent" />
+            </shape>
+        </scale>
+    </item>
+</layer-list>

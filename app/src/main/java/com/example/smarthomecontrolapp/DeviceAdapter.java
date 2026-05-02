@@ -75,7 +75,6 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
 
         holder.switchDevice.setOnCheckedChangeListener(null);
         holder.switchDevice.setChecked(device.isStatus());
-        updateCardUI(holder, device.isStatus());
 
         holder.switchDevice.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (device.isStatus() == isChecked) return;
@@ -103,21 +102,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
                 
                 db.child("logs").push().setValue(log);
             }
-
-            updateCardUI(holder, isChecked);
         });
-    }
-
-    private void updateCardUI(ViewHolder holder, boolean isOn) {
-        if (isOn) {
-            holder.deviceCard.setCardBackgroundColor(ContextCompat.getColor(context, R.color.mainAccent));
-            holder.tvDeviceName.setTextColor(Color.WHITE);
-            holder.ivDevice.setColorFilter(Color.WHITE);
-        } else {
-            holder.deviceCard.setCardBackgroundColor(Color.WHITE);
-            holder.tvDeviceName.setTextColor(Color.BLACK);
-            holder.ivDevice.setColorFilter(Color.BLACK);
-        }
     }
 
     @Override

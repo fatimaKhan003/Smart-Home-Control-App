@@ -30,10 +30,10 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Initialize Firebase Auth
+
         mAuth = FirebaseAuth.getInstance();
 
-        // Wire up views
+
         etEmail        = findViewById(R.id.etEmail);
         etPassword     = findViewById(R.id.etPassword);
         tilEmail       = findViewById(R.id.tilEmail);
@@ -43,10 +43,10 @@ public class LoginActivity extends AppCompatActivity {
         tvGoToRegister = findViewById(R.id.tvGoToRegister);
         progressBar    = findViewById(R.id.progressBar);
 
-        // Login button click
+
         btnLogin.setOnClickListener(v -> attemptLogin());
 
-        // Navigate to register screen
+
         tvGoToRegister.setOnClickListener(v -> {
             startActivity(new Intent(LoginActivity.this, register.class));
         });
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
     private void attemptLogin() {
-        // Clear previous errors
+
         tilEmail.setError(null);
         tilPassword.setError(null);
         tvError.setVisibility(View.GONE);
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
         String email    = etEmail.getText().toString().trim();
         String password = etPassword.getText().toString().trim();
 
-        // Validate inputs
+
         if (TextUtils.isEmpty(email)) {
             tilEmail.setError("Email is required");
             return;
@@ -77,10 +77,9 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // Show loading
         setLoading(true);
 
-        // Firebase sign in
+
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     setLoading(false);
@@ -98,7 +97,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private void goToMain() {
         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        // Clear the back stack so the user can't go back to login
+
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         startActivity(intent);
         finish();

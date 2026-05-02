@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -49,7 +50,14 @@ public class HomeFragment extends Fragment {
         tvExpense=view.findViewById(R.id.tvExpense);
         View fabAdd=view.findViewById(R.id.fabAddDevice);
         View profileCircle = view.findViewById(R.id.profileCircle);
-
+        ImageView ivMenu=view.findViewById(R.id.ivMenu);
+        ivMenu.setOnClickListener(v->
+        {
+            if(getActivity() instanceof MainActivity)
+            {
+                ((MainActivity)getActivity()).openDrawer();
+            }
+        });
         fabAdd.setOnClickListener(v->showAddDeviceDialog());
         profileCircle.setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction()
@@ -178,7 +186,7 @@ public class HomeFragment extends Fragment {
                                 groupMap.put(category,device);
                             }
                         }
-                        // Calculate power for ALL rooms to keep expenses accurate
+
                         if (device.isStatus()) {
                             totalPower += device.getPowerConsumption();
                         }

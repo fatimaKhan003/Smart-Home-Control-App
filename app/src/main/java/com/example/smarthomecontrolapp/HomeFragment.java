@@ -48,7 +48,16 @@ public class HomeFragment extends Fragment {
         tvWelcome=view.findViewById(R.id.tvWelcome);
         tvExpense=view.findViewById(R.id.tvExpense);
         View fabAdd=view.findViewById(R.id.fabAddDevice);
+        View profileCircle = view.findViewById(R.id.profileCircle);
+
         fabAdd.setOnClickListener(v->showAddDeviceDialog());
+        profileCircle.setOnClickListener(v -> {
+            getParentFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, new ProfileFragment())
+                    .addToBackStack(null)
+                    .commit();
+        });
+
         mAuth= FirebaseAuth.getInstance();
         currentUser=mAuth.getCurrentUser();
         list=new ArrayList<>();
@@ -87,7 +96,7 @@ public class HomeFragment extends Fragment {
     }
 
     private void showAddDeviceDialog() {
-        String[] categories={"Smart TV", "Smart Fridge", "Lightings", "Air Condition","Blinds"};
+        String[] categories={"Smart TV", "Smart Fridge", "Lighting", "Air Condition","Blinds"};
         AlertDialog.Builder builder= new AlertDialog.Builder(getContext());
         builder.setTitle("Select Device Category");
         builder.setItems(categories,((dialog, which) -> {
@@ -111,7 +120,7 @@ public class HomeFragment extends Fragment {
     private void addDeviceToFirebase(String category, String room) {
         String id=deviceRef.push().getKey();
         double power=0;
-        if(category.equals("ACs")) power=1.5;
+        if(category.equals("Air Condition")) power=1.5;
         else if(category.equals("Smart Fridge"))power=0.5;
         else if(category.equals("Smart TV"))power=0.2;
         else power=0.05;

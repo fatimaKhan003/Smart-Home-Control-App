@@ -33,7 +33,7 @@
     <View
         android:layout_width="52dp"
         android:layout_height="52dp"
-        android:id="@+id/pprofileCircle"
+        android:id="@+id/profileCircle"
         android:layout_marginEnd="16dp"
         android:background="@drawable/bg_profile_circle"
         app:layout_constraintBottom_toBottomOf="@+id/tvHome"
@@ -159,7 +159,7 @@
         app:tabIndicatorHeight="0dp"
         app:tabMode="scrollable"
         app:tabRippleColor="@android:color/transparent"
-        app:tabSelectedTextColor="#7B61FF"
+        app:tabSelectedTextColor="@color/mainAccent"
         app:tabTextAppearance="@android:style/TextAppearance.Small"
         app:tabTextColor="#757575" />
 
@@ -181,7 +181,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="#7B61FF"
+        app:backgroundTint="@color/mainAccent"
         app:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

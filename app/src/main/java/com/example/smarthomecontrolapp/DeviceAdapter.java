@@ -1,12 +1,14 @@
 package com.example.smarthomecontrolapp;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 
 public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder> {
     Context context;
-    ArrayList<Device>list;
+    ArrayList<Device> list;
     public DeviceAdapter(Context context, ArrayList<Device> list)
     {
         this.context=context;
@@ -82,15 +84,16 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
     holder.switchDevice.setChecked(device.isStatus());
     if(device.isStatus())
     {
-        holder.deviceCard.setCardBackgroundColor(android.graphics.Color.parseColor("#7B61FF"));
-        holder.tvDeviceName.setTextColor(android.graphics.Color.WHITE);
-        holder.tvDeviceCount.setTextColor(android.graphics.Color.parseColor("#E0E0E0"));
-        holder.ivDevice.setColorFilter(android.graphics.Color.WHITE);
+        int accentColor = ContextCompat.getColor(context, R.color.mainAccent);
+        holder.deviceCard.setCardBackgroundColor(accentColor);
+        holder.tvDeviceName.setTextColor(Color.WHITE);
+        holder.tvDeviceCount.setTextColor(Color.parseColor("#E0E0E0"));
+        holder.ivDevice.setColorFilter(Color.WHITE);
     } else {
-        holder.deviceCard.setCardBackgroundColor(android.graphics.Color.WHITE);
-        holder.tvDeviceName.setTextColor(android.graphics.Color.BLACK);
-        holder.tvDeviceCount.setTextColor(android.graphics.Color.GRAY);
-        holder.ivDevice.setColorFilter(android.graphics.Color.BLACK);
+        holder.deviceCard.setCardBackgroundColor(Color.WHITE);
+        holder.tvDeviceName.setTextColor(Color.BLACK);
+        holder.tvDeviceCount.setTextColor(Color.GRAY);
+        holder.ivDevice.setColorFilter(Color.BLACK);
     }
 
 }

@@ -4,18 +4,18 @@
     android:icon="@drawable/icon_home"
     android:title="Home"/>
     <item
-        android:id="@+id/nav_energy"
-        android:icon="@drawable/ic_energy"
-        android:title="Energy"/>
-    <item
         android:id="@+id/nav_rooms"
         android:icon="@drawable/ic_room"
         android:title="Rooms"
         />
     <item
-        android:id="@+id/nav_profile"
+        android:id="@+id/nav_energy"
+        android:icon="@drawable/ic_energy"
+        android:title="Energy"/>
+    <item
+        android:id="@+id/nav_details"
         android:icon="@drawable/ic_profile"
-        android:title="Profile"/>
+        android:title="Details"/>
 
 
 </menu>

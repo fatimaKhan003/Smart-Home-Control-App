@@ -25,73 +25,73 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class MainActivity extends AppCompatActivity {
-BottomNavigationView bottomNav;
-DrawerLayout drawerLayout;
-NavigationView navigationView;
+    BottomNavigationView bottomNav;
+    DrawerLayout drawerLayout;
+    NavigationView navigationView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main);
         init();
         setupDrawerHeader();
         setupDrawer();
         setupBottomNav();
-        if(savedInstanceState==null)
-        {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
+        
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomeFragment()).commit();
             bottomNav.setSelectedItemId(R.id.nav_home);
         }
-        // At the bottom of onCreate, after all setup:
+        
         handleIncomingIntent(getIntent());
     }
+
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
+        setIntent(intent);
         handleIncomingIntent(intent);
     }
+
     private void handleIncomingIntent(Intent intent) {
         if (intent == null) return;
         String openFragment = intent.getStringExtra("openFragment");
         if ("details".equals(openFragment)) {
-            String roomName = intent.getStringExtra("roomName");
-            DetailsFragment fragment = new DetailsFragment();
-            Bundle args = new Bundle();
-            args.putString("roomName", roomName);
-            fragment.setArguments(args);
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
+            // Trigger the bottom nav selection only. The listener handles the fragment replacement.
             bottomNav.setSelectedItemId(R.id.nav_details);
         }
     }
-    private void setupBottomNav() {
-        bottomNav.setOnItemSelectedListener(item->
-        {Fragment selectedFragment=null;
-            int id=item.getItemId();
-            if(id==R.id.nav_home)
-            {selectedFragment=new HomeFragment();
 
+    private void setupBottomNav() {
+        bottomNav.setOnItemSelectedListener(item -> {
+            Fragment selectedFragment = null;
+            int id = item.getItemId();
+            
+            if (id == R.id.nav_home) {
+                selectedFragment = new HomeFragment();
+            } else if (id == R.id.nav_rooms) {
+                selectedFragment = new RoomsFragment();
+            } else if (id == R.id.nav_energy) {
+                selectedFragment = new EnergyFragment();
+            } else if (id == R.id.nav_details) {
+                selectedFragment = new DetailsFragment();
+                // Pass roomName to DetailsFragment if navigation came from Room History button
+                String roomName = getIntent().getStringExtra("roomName");
+                if (roomName != null) {
+                    Bundle args = new Bundle();
+                    args.putString("roomName", roomName);
+                    selectedFragment.setArguments(args);
+                    getIntent().removeExtra("roomName"); // Consume it
+                }
             }
-            else if(id==R.id.nav_rooms)
-            {
-                selectedFragment=new RoomsFragment();
-            }
-            else if(id==R.id.nav_energy)
-            {
-                selectedFragment=new EnergyFragment();
-            }
-            else if(id==R.id.nav_details)
-            {
-                selectedFragment=new DetailsFragment();
-            }
+            
             if (selectedFragment != null) {
                 getSupportFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, selectedFragment)
                         .commit();
             }
-return true;
+            return true;
         });
     }
 
@@ -103,31 +103,25 @@ return true;
             if (id == R.id.drawer_home) {
                 selected = new HomeFragment();
                 bottomNav.setSelectedItemId(R.id.nav_home);
-
             } else if (id == R.id.drawer_rooms) {
                 selected = new RoomsFragment();
                 bottomNav.setSelectedItemId(R.id.nav_rooms);
-
             } else if (id == R.id.drawer_energy) {
                 selected = new EnergyFragment();
                 bottomNav.setSelectedItemId(R.id.nav_energy);
-
             } else if (id == R.id.drawer_details) {
                 selected = new DetailsFragment();
                 bottomNav.setSelectedItemId(R.id.nav_details);
-
             } else if (id == R.id.drawer_profile) {
                 selected = new ProfileFragment();
-
             } else if (id == R.id.drawer_logout) {
                 new androidx.appcompat.app.AlertDialog.Builder(this)
                         .setTitle("Logout")
                         .setMessage("Are you sure you want to logout?")
                         .setPositiveButton("Logout", (dialog, which) -> {
                             FirebaseAuth.getInstance().signOut();
-                            android.content.Intent intent = new android.content.Intent(this, LoginActivity.class);
-                            intent.setFlags(android.content.Intent.FLAG_ACTIVITY_NEW_TASK |
-                                    android.content.Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            Intent intent = new Intent(this, LoginActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             startActivity(intent);
                             finish();
                         })
@@ -148,50 +142,36 @@ return true;
             return true;
         });
     }
+
     private void setupDrawerHeader() {
-        View headerView=navigationView.getHeaderView(0);
-        TextView navUserName=headerView.findViewById(R.id.navUserName);
+        View headerView = navigationView.getHeaderView(0);
+        TextView navUserName = headerView.findViewById(R.id.navUserName);
         TextView navUserEmail = headerView.findViewById(R.id.navUserEmail);
-        FirebaseUser user= FirebaseAuth.getInstance().getCurrentUser();
-        if(user!=null)
-        {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        
+        if (user != null) {
             navUserEmail.setText(user.getEmail());
-        }
-        FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String name=snapshot.getValue(String.class);
-                if(name!=null)
-                {
-                    navUserName.setText(name);
+            FirebaseDatabase.getInstance().getReference("users").child(user.getUid()).child("name").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    String name = snapshot.getValue(String.class);
+                    if (name != null) {
+                        navUserName.setText(name);
+                    }
                 }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+            });
+        }
     }
-    public void openDrawer()
-    {
+
+    public void openDrawer() {
         drawerLayout.openDrawer(GravityCompat.START);
     }
 
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+    private void init() {
+        bottomNav = findViewById(R.id.bottom_navigation);
+        drawerLayout = findViewById(R.id.drawerLayout);
+        navigationView = findViewById(R.id.navigationView);
     }
-
-    private void init()
-    {
-        bottomNav=findViewById(R.id.bottom_navigation);
-        drawerLayout=findViewById(R.id.drawerLayout);
-        navigationView=findViewById(R.id.navigationView);
-    }
-
 }

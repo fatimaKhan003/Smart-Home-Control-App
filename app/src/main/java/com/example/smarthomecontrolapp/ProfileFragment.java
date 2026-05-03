@@ -26,7 +26,7 @@ import java.util.Map;
 public class ProfileFragment extends Fragment {
 
     private TextView tvName, tvEmail;
-    private EditText etRate, etTargetTV, etTargetFridge, etTargetLighting, etTargetAC, etTargetBlinds;
+    private EditText etRate, etTargetTV, etTargetFridge, etTargetLighting, etTargetAC, etTargetBlinds, etTargetMusic;
     private DatabaseReference userRef;
     private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
@@ -45,6 +45,7 @@ public class ProfileFragment extends Fragment {
         etTargetLighting = view.findViewById(R.id.etTargetLighting);
         etTargetAC = view.findViewById(R.id.etTargetAC);
         etTargetBlinds = view.findViewById(R.id.etTargetBlinds);
+        etTargetMusic = view.findViewById(R.id.etTargetMusic);
 
         View btnBack = view.findViewById(R.id.btnBack);
         View btnSave = view.findViewById(R.id.btnSave);
@@ -81,6 +82,7 @@ public class ProfileFragment extends Fragment {
                         etTargetLighting.setText(String.valueOf(targets.getOrDefault(DeviceType.LIGHTING.getDisplayName(), 50.0)));
                         etTargetAC.setText(String.valueOf(targets.getOrDefault(DeviceType.AIR_CONDITION.getDisplayName(), 50.0)));
                         etTargetBlinds.setText(String.valueOf(targets.getOrDefault(DeviceType.BLINDS.getDisplayName(), 50.0)));
+                        etTargetMusic.setText(String.valueOf(targets.getOrDefault(DeviceType.MUSIC_SYSTEM.getDisplayName(), 50.0)));
                     }
                 }
             }
@@ -105,6 +107,7 @@ public class ProfileFragment extends Fragment {
             double targetLighting = Double.parseDouble(etTargetLighting.getText().toString());
             double targetAC = Double.parseDouble(etTargetAC.getText().toString());
             double targetBlinds = Double.parseDouble(etTargetBlinds.getText().toString());
+            double targetMusic = Double.parseDouble(etTargetMusic.getText().toString());
 
             Map<String, Double> targets = new HashMap<>();
             targets.put(DeviceType.SMART_TV.getDisplayName(), targetTV);
@@ -112,8 +115,9 @@ public class ProfileFragment extends Fragment {
             targets.put(DeviceType.LIGHTING.getDisplayName(), targetLighting);
             targets.put(DeviceType.AIR_CONDITION.getDisplayName(), targetAC);
             targets.put(DeviceType.BLINDS.getDisplayName(), targetBlinds);
+            targets.put(DeviceType.MUSIC_SYSTEM.getDisplayName(), targetMusic);
 
-            double totalTarget = targetTV + targetFridge + targetLighting + targetAC + targetBlinds;
+            double totalTarget = targetTV + targetFridge + targetLighting + targetAC + targetBlinds + targetMusic;
 
             userRef.child("electricityRate").setValue(rate);
             userRef.child("deviceSavingsTargets").setValue(targets);

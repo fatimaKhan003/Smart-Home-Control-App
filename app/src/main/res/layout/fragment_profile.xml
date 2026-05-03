@@ -199,6 +199,21 @@
                 android:inputType="numberDecimal" />
         </com.google.android.material.textfield.TextInputLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tilTargetMusic"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="Music System Target"
+            app:layout_constraintTop_toBottomOf="@id/tilTargetBlinds">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/etTargetMusic"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="numberDecimal" />
+        </com.google.android.material.textfield.TextInputLayout>
+
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
             android:layout_width="match_parent"
@@ -209,7 +224,7 @@
             android:textAllCaps="false"
             app:backgroundTint="@color/mainAccent"
             app:cornerRadius="12dp"
-            app:layout_constraintTop_toBottomOf="@id/tilTargetBlinds"
+            app:layout_constraintTop_toBottomOf="@id/tilTargetMusic"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

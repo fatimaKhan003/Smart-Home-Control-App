@@ -1,5 +1,6 @@
 package com.example.smarthomecontrolapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -54,14 +55,12 @@ public class RoomDetailActivity extends AppCompatActivity {
         findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
         historybtn.setOnClickListener(v -> {
-            DetailsFragment fragment = new DetailsFragment();
-            Bundle args = new Bundle();
-            args.putString("roomName", roomName);
-            fragment.setArguments(args);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .addToBackStack(null)
-                    .commit();
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("openFragment", "details");
+            intent.putExtra("roomName", roomName);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish();
         });
 
         tvFilterSelector.setOnClickListener(this::showFilterMenu);
@@ -132,12 +131,10 @@ public class RoomDetailActivity extends AppCompatActivity {
     }
 
     private void calculateRoomStats() {
-        // 1. Always update the device count label
         if (tvDevicesLabel != null) {
             tvDevicesLabel.setText("Devices In This Room (" + roomDeviceList.size() + ")");
         }
 
-        // 2. If room has no devices, zero out stats and exit
         if (roomDeviceList.isEmpty()) {
             if (isMoneyView) {
                 tvTodayCost.setText("$0.00");
@@ -152,7 +149,6 @@ public class RoomDetailActivity extends AppCompatActivity {
 
         double todayKWh = calculateTodayConsumption();
         
-        // Calculate Today's Budget (Weighted by devices)
         Calendar cal = Calendar.getInstance();
         int daysInMonth = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
         double dailyHouseBudgetMoney = monthlySavingsTarget / daysInMonth;
@@ -179,7 +175,6 @@ public class RoomDetailActivity extends AppCompatActivity {
             isOverBudget = todayKWh > todayRoomBudgetKWh;
         }
 
-        // Change color if over budget
         if (isOverBudget) {
             tvTodayCost.setTextColor(ContextCompat.getColor(this, R.color.logoutRed));
         } else {
@@ -217,7 +212,6 @@ public class RoomDetailActivity extends AppCompatActivity {
         for (Device d : roomDeviceList) {
             long totalDurationToday = 0;
             
-            // Check past intervals from logs
             List<Interval> intervals = intervalsMap.get(d.getDeviceId());
             if (intervals != null) {
                 for (Interval inter : intervals) {
@@ -229,7 +223,6 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
             }
 
-            // Check current active session
             if (d.isStatus()) {
                 long sessionStart = lastOn.containsKey(d.getDeviceId()) ? lastOn.get(d.getDeviceId()) : d.getLastStatusChangeTimestamp();
                 if (sessionStart < now) {

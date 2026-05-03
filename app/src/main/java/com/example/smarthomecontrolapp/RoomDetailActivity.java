@@ -73,6 +73,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         tvTodayCost = findViewById(R.id.tvTodayCost);
         tvTodayBudget = findViewById(R.id.tvTodayBudget);
         tvFilterSelector = findViewById(R.id.tvFilterSelector);
+        tvDevicesLabel = findViewById(R.id.tvDevicesLabel);
         recyclerRoomDevices = findViewById(R.id.recyclerRoomDevices);
 
         tvRoomTitle.setText(roomName);
@@ -131,7 +132,23 @@ public class RoomDetailActivity extends AppCompatActivity {
     }
 
     private void calculateRoomStats() {
-        if (roomDeviceList.isEmpty()) return;
+        // 1. Always update the device count label
+        if (tvDevicesLabel != null) {
+            tvDevicesLabel.setText("Devices In This Room (" + roomDeviceList.size() + ")");
+        }
+
+        // 2. If room has no devices, zero out stats and exit
+        if (roomDeviceList.isEmpty()) {
+            if (isMoneyView) {
+                tvTodayCost.setText("$0.00");
+                tvTodayBudget.setText("$0.00");
+            } else {
+                tvTodayCost.setText("0.00 kWh");
+                tvTodayBudget.setText("0.00 kWh");
+            }
+            tvTodayCost.setTextColor(ContextCompat.getColor(this, R.color.textDark));
+            return;
+        }
 
         double todayKWh = calculateTodayConsumption();
         
@@ -200,7 +217,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         for (Device d : roomDeviceList) {
             long totalDurationToday = 0;
             
-            // 1. Check past intervals from logs
+            // Check past intervals from logs
             List<Interval> intervals = intervalsMap.get(d.getDeviceId());
             if (intervals != null) {
                 for (Interval inter : intervals) {
@@ -212,7 +229,7 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
             }
 
-            // 2. Check current active session (Logic from fix-issues)
+            // Check current active session
             if (d.isStatus()) {
                 long sessionStart = lastOn.containsKey(d.getDeviceId()) ? lastOn.get(d.getDeviceId()) : d.getLastStatusChangeTimestamp();
                 if (sessionStart < now) {
@@ -223,13 +240,9 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
             }
 
-            // 3. Final math for this device
             double hours = totalDurationToday / (1000.0 * 60.0 * 60.0);
             roomTodayKWh += (hours * d.getPowerConsumption() * Math.max(1, d.getCount()));
         }
-
-        // 4. Update the UI label (Logic from main)
-        tvDevicesLabel.setText("Devices In This Room (" + roomDeviceList.size() + ")");
 
         return roomTodayKWh;
     }

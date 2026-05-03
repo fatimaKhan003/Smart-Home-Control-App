@@ -1,5 +1,6 @@
 package com.example.smarthomecontrolapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
@@ -40,8 +41,30 @@ setContentView(R.layout.activity_main);
             getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,new HomeFragment()).commit();
             bottomNav.setSelectedItemId(R.id.nav_home);
         }
+        // At the bottom of onCreate, after all setup:
+        handleIncomingIntent(getIntent());
     }
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        handleIncomingIntent(intent);
+    }
+    private void handleIncomingIntent(Intent intent) {
+        if (intent == null) return;
+        String openFragment = intent.getStringExtra("openFragment");
+        if ("details".equals(openFragment)) {
+            String roomName = intent.getStringExtra("roomName");
+            DetailsFragment fragment = new DetailsFragment();
+            Bundle args = new Bundle();
+            args.putString("roomName", roomName);
+            fragment.setArguments(args);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            bottomNav.setSelectedItemId(R.id.nav_details);
+        }
+    }
     private void setupBottomNav() {
         bottomNav.setOnItemSelectedListener(item->
         {Fragment selectedFragment=null;

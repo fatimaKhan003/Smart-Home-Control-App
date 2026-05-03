@@ -70,6 +70,7 @@ public class DeviceAdapter extends RecyclerView.Adapter<DeviceAdapter.ViewHolder
             case "Lighting": holder.ivDevice.setImageResource(R.drawable.ic_bulb); break;
             case "Air Condition": holder.ivDevice.setImageResource(R.drawable.ic_ac); break;
             case "Blinds": holder.ivDevice.setImageResource(R.drawable.ic_blinds); break;
+            case "Music System": holder.ivDevice.setImageResource(R.drawable.ic_musicplayer); break;
             default: holder.ivDevice.setImageResource(R.drawable.icon_home); break;
         }
 

@@ -379,20 +379,79 @@ public class HomeFragment extends Fragment {
     }
 
     private void addDeviceToFirebase(String category, String room) {
-        String uid = FirebaseAuth.getInstance().getUid();
-        if (uid == null) return;
-        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("devices");
-        String id = dRef.push().getKey();
-        
-        double power = 0;
-        if (category.equals("Air Condition")) power = 1.5;
-        else if (category.equals("Smart Fridge")) power = 0.5;
-        else if (category.equals("Smart TV")) power = 0.2;
-        else power = 0.05;
+        showWattsInputDialog(category,room);
+    }
+    private void showWattsInputDialog(String category, String room) {
 
-        Device newDevice = new Device(id, room, category, category, false, power, 1);
-        if (id != null) {
-            dRef.child(id).setValue(newDevice);
-        }
+        String defaultWatts;
+        if (category.equals("Air Condition"))       defaultWatts = "1500";
+        else if (category.equals("Smart Fridge"))   defaultWatts = "500";
+        else if (category.equals("Smart TV"))       defaultWatts = "200";
+        else if (category.equals("Lighting"))       defaultWatts = "60";
+        else if (category.equals("Blinds"))         defaultWatts = "50";
+        else                                         defaultWatts = "100";
+
+
+        android.widget.EditText input = new android.widget.EditText(getContext());
+        input.setHint("Enter watts (e.g. 1500)");
+        input.setText(defaultWatts);
+        input.setSelectAllOnFocus(true);
+        input.setPadding(50, 30, 50, 30);
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER |
+                android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Power Consumption")
+                .setMessage("Enter the wattage for " + category + "\n(suggested: " + defaultWatts + "W)")
+                .setView(input)
+                .setPositiveButton("Add Device", (dialog, which) -> {
+                    String wattsStr = input.getText().toString().trim();
+
+                    if (wattsStr.isEmpty()) {
+                        android.widget.Toast.makeText(getContext(),
+                                "Please enter wattage",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    double watts;
+                    try {
+                        watts = Double.parseDouble(wattsStr);
+                    } catch (NumberFormatException e) {
+                        android.widget.Toast.makeText(getContext(),
+                                "Invalid wattage entered",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (watts <= 0) {
+                        android.widget.Toast.makeText(getContext(),
+                                "Wattage must be greater than 0",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+
+                    double powerInKwh = watts / 1000.0;
+
+
+                    String uid = FirebaseAuth.getInstance().getUid();
+                    if (uid == null) return;
+                    DatabaseReference dRef = FirebaseDatabase.getInstance()
+                            .getReference("users").child(uid).child("devices");
+                    String id = dRef.push().getKey();
+
+                    Device newDevice = new Device(id, room, category, category, false, powerInKwh, 1);
+                    if (id != null) {
+                        dRef.child(id).setValue(newDevice)
+                                .addOnSuccessListener(aVoid ->
+                                        android.widget.Toast.makeText(getContext(),
+                                                category + " added to " + room,
+                                                android.widget.Toast.LENGTH_SHORT).show()
+                                );
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

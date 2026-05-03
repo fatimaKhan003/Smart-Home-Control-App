@@ -8,13 +8,17 @@
     android:padding="24dp">
 
 
-    <View
+    <ImageView
         android:id="@+id/navProfileCircle"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_profile"
         android:background="@drawable/bg_profile_circle"
+        android:scaleType="centerInside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="@color/iconColor" />
 
 
     <TextView

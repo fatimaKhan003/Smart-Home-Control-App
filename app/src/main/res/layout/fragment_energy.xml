@@ -103,7 +103,7 @@
                 </LinearLayout>
             </FrameLayout>
 
-            <!-- Side Readings ($0 and Max Budget) moved below the arcContainer -->
+            <!-- Side Readings ($0 and Max Budget) -->
             <RelativeLayout
                 android:id="@+id/arcLabelsContainer"
                 android:layout_width="280dp"

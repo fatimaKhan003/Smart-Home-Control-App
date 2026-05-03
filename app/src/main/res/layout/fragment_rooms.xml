@@ -36,17 +36,6 @@
         app:layout_constraintTop_toTopOf="parent"/>
 
 
-    <View
-        android:id="@+id/profileCircle"
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/bg_profile_circle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvScreenTitle"
-        app:layout_constraintBottom_toBottomOf="@+id/tvScreenTitle"/>
-
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerRooms"
         android:layout_width="match_parent"

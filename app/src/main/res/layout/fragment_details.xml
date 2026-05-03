@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="btnBack,tvTitle,tabCard,chartContainer,statsContainer,tvExpensesLabel,ivExpensesChevron,rvExpenses" />
+        app:constraint_referenced_ids="btnBack,tvTitle,tabCard,chartContainer,statsContainer,tvExpensesLabel,rvExpenses" />
 
     <!-- Header -->
     <ImageView
@@ -238,18 +238,6 @@
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/statsContainer" />
-
-    <ImageView
-        android:id="@+id/ivExpensesChevron"
-        android:layout_width="20dp"
-        android:layout_height="20dp"
-        android:layout_marginEnd="24dp"
-        android:src="@drawable/ic_chevron_down"
-        android:rotation="-90"
-        app:layout_constraintBottom_toBottomOf="@id/tvExpensesLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/tvExpensesLabel"
-        app:tint="@color/textSecondary" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvExpenses"

@@ -24,7 +24,7 @@ import java.util.List;
 
 public class RoomDetailActivity extends AppCompatActivity {
 
-    TextView tvRoomTitle, tvTemperature, tvTodayCost;
+    TextView tvRoomTitle, tvTemperature, tvTodayCost,tvDevicesLabel;
     RecyclerView recyclerRoomDevices;
     DeviceAdapter deviceAdapter;
     ArrayList<Device> deviceList;
@@ -48,6 +48,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         tvTemperature = findViewById(R.id.tvTemperature);
         tvTodayCost = findViewById(R.id.tvTodayCost);
         recyclerRoomDevices = findViewById(R.id.recyclerRoomDevices);
+        tvDevicesLabel=findViewById(R.id.tvDevicesLabel);
 
 
 
@@ -112,6 +113,7 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
 
                 deviceAdapter.notifyDataSetChanged();
+                tvDevicesLabel.setText("Devices In This Room ("+ deviceList.size()+" )");
 
                 // Update cost display
                 double cost = totalPower * 0.12;

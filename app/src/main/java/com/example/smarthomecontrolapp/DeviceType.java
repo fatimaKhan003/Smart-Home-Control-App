@@ -5,7 +5,9 @@ public enum DeviceType {
     SMART_FRIDGE("Smart Fridge"),
     LIGHTING("Lighting"),
     AIR_CONDITION("Air Condition"),
-    BLINDS("Blinds");
+    BLINDS("Blinds"),
+    MUSIC_SYSTEM("Music System");
+
 
     private final String displayName;
 

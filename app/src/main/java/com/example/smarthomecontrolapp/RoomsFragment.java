@@ -64,44 +64,53 @@ public class RoomsFragment extends Fragment {
     }
 
     private void loadRooms() {
-       DatabaseReference deviceRef= FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("devices");
-       deviceRef.addValueEventListener(new ValueEventListener() {
-           @Override
-           public void onDataChange(@NonNull DataSnapshot snapshot) {
-               roomList.clear();
-               String[] rooms=
-                       {
-                               "Living Room", "Bedroom","Kitchen","Washroom","Drawing Room","Dining Room","TV Lounge"
-                       };
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid == null) return;
 
-               for (String roomName : rooms) {
-
-                   int count = 0;
-
-                   for (DataSnapshot ds : snapshot.getChildren()) {
-                       Device device = ds.getValue(Device.class);
-
-                       if (device != null &&
-                               device.getRoomId() != null &&
-                               device.getRoomId().equalsIgnoreCase(roomName)) {
-                           count++;
-                       }
-                   }
-
-                   roomList.add(new Room("1",roomName,20.0, count));
-               }
-
-               roomAdapter.notifyDataSetChanged();
-           }
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(uid)
+                .child("devices")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        roomList.clear();
 
 
+                        String[] defaultRooms = {"Living Room", "Bedroom", "Kitchen",
+                                "Washroom", "Drawing Room", "Dining Room", "TV Lounge"};
 
-           @Override
-           public void onCancelled(@NonNull DatabaseError error) {
-
-           }
-       });
+                        List<String> allRoomNames = new ArrayList<>();
+                        for (String r : defaultRooms) allRoomNames.add(r);
 
 
+                        for (DataSnapshot ds : snapshot.getChildren()) {
+                            Device device = ds.getValue(Device.class);
+                            if (device != null && device.getRoomId() != null) {
+                                if (!allRoomNames.contains(device.getRoomId())) {
+                                    allRoomNames.add(device.getRoomId());
+                                }
+                            }
+                        }
+
+
+                        for (String roomName : allRoomNames) {
+                            int count = 0;
+                            for (DataSnapshot ds : snapshot.getChildren()) {
+                                Device device = ds.getValue(Device.class);
+                                if (device != null && device.getRoomId() != null
+                                        && device.getRoomId().equalsIgnoreCase(roomName)) {
+                                    count++;
+                                }
+                            }
+                            roomList.add(new Room("1", roomName, 20.0, count));
+                        }
+
+                        roomAdapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {}
+                });
     }
 }

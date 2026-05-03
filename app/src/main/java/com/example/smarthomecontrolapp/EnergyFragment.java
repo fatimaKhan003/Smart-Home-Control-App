@@ -5,6 +5,7 @@ import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -64,7 +65,12 @@ public class EnergyFragment extends Fragment {
 
         tvCurrentDate.setText(new SimpleDateFormat("dd MMMM yyyy", Locale.US).format(new Date()));
         view.findViewById(R.id.roomFilterCard).setOnClickListener(this::showRoomFilterMenu);
-        view.findViewById(R.id.btnBack).setOnClickListener(v -> getParentFragmentManager().popBackStack());
+        ImageView ivMenu = view.findViewById(R.id.ivMenu);
+        ivMenu.setOnClickListener(v -> {
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).openDrawer();
+            }
+        });
         return view;
     }
 

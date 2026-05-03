@@ -24,7 +24,7 @@ import java.util.List;
 
 public class RoomDetailActivity extends AppCompatActivity {
 
-    TextView tvRoomTitle, tvTemperature, tvTodayCost;
+    TextView tvRoomTitle, tvTemperature, tvTodayCost,tvDevicesLabel;
     RecyclerView recyclerRoomDevices;
     DeviceAdapter deviceAdapter;
     ArrayList<Device> deviceList;
@@ -48,6 +48,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         tvTemperature = findViewById(R.id.tvTemperature);
         tvTodayCost = findViewById(R.id.tvTodayCost);
         recyclerRoomDevices = findViewById(R.id.recyclerRoomDevices);
+        tvDevicesLabel=findViewById(R.id.tvDevicesLabel);
 
 
 
@@ -57,13 +58,13 @@ public class RoomDetailActivity extends AppCompatActivity {
         findViewById(R.id.ivBack).setOnClickListener(v -> finish());
 
         historybtn=findViewById(R.id.btnHistory);
-        historybtn.setOnClickListener(v->
-        {
-            DetailsFragment fragment = new DetailsFragment();
-            Bundle args=new Bundle();
-            args.putString("roomName",roomName);
-            fragment.setArguments(args);
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,fragment).commit();
+        historybtn.setOnClickListener(v -> {
+
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra("openFragment", "details");
+            intent.putExtra("roomName", roomName);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
         });
 
 
@@ -112,6 +113,7 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
 
                 deviceAdapter.notifyDataSetChanged();
+                tvDevicesLabel.setText("Devices In This Room ("+ deviceList.size()+" )");
 
                 // Update cost display
                 double cost = totalPower * 0.12;

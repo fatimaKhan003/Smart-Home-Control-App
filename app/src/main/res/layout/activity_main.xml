@@ -12,7 +12,9 @@
     <RelativeLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
+        >
 
         <FrameLayout
             android:id="@+id/fragment_container"
@@ -25,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:background="#FFFFFF"
+
             app:menu="@menu/bottom_nav_menu"
             app:itemIconTint="@color/nav_item_color"
             app:itemTextColor="@color/nav_item_color"/>

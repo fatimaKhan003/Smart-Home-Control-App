@@ -18,10 +18,9 @@
             android:padding="24dp">
 
             <ImageView
-                android:id="@+id/btnBack"
+                android:id="@+id/ivMenu"
                 android:layout_width="24dp"
                 android:layout_height="24dp"
-                android:rotation="180"
                 android:src="@drawable/ic_menu"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

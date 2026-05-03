@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment {
     private void setupViewModel() {
         viewModel = new ViewModelProvider(requireActivity()).get(EnergyViewModel.class);
 
-        // Pre-check if data is already in ViewModel to avoid flashing
+
         if (viewModel.getDevices().getValue() != null && !viewModel.getDevices().getValue().isEmpty()) {
             allDevices.clear();
             allDevices.addAll(viewModel.getDevices().getValue());
@@ -140,10 +140,55 @@ public class HomeFragment extends Fragment {
 
     private void setupRoomTabs(View view) {
         TabLayout tabLayout = view.findViewById(R.id.tabLayoutRooms);
-        String[] rooms = {"Living Room", "Bedroom", "Kitchen", "Washroom", "Drawing Room", "Dining Room", "TV Lounge"};
-        for (String room : rooms) {
-            tabLayout.addTab(tabLayout.newTab().setText(room));
-        }
+
+        String uid = FirebaseAuth.getInstance().getUid();
+        if (uid == null) return;
+
+        FirebaseDatabase.getInstance()
+                .getReference("users")
+                .child(uid)
+                .child("devices")
+                .addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+
+                        List<String> roomNames = new ArrayList<>();
+
+
+                        String[] defaultRooms = {"Living Room", "Bedroom", "Kitchen",
+                                "Washroom", "Drawing Room", "Dining Room", "TV Lounge"};
+                        for (String r : defaultRooms) roomNames.add(r);
+
+
+                        for (com.google.firebase.database.DataSnapshot ds : snapshot.getChildren()) {
+                            Device device = ds.getValue(Device.class);
+                            if (device != null && device.getRoomId() != null) {
+                                if (!roomNames.contains(device.getRoomId())) {
+                                    roomNames.add(device.getRoomId());
+                                }
+                            }
+                        }
+
+
+                        tabLayout.removeAllTabs();
+                        for (String room : roomNames) {
+                            tabLayout.addTab(tabLayout.newTab().setText(room));
+                        }
+
+
+                        for (int i = 0; i < tabLayout.getTabCount(); i++) {
+                            TabLayout.Tab tab = tabLayout.getTabAt(i);
+                            if (tab != null && currentRoom.equals(tab.getText())) {
+                                tab.select();
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) {}
+                });
+
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -215,7 +260,7 @@ public class HomeFragment extends Fragment {
             }
             double hours = totalDuration / (1000.0 * 60.0 * 60.0);
             
-            //discrepancy fix: ensure count is handled correctly
+
             int count = device.getCount() > 0 ? device.getCount() : 1;
             totalSpent += (hours * device.getPowerConsumption() * userRate * count);
         }
@@ -242,31 +287,171 @@ public class HomeFragment extends Fragment {
     }
 
     private void showRoomSelectionDialog(String category) {
-        String[] rooms = {"Living Room", "Bedroom", "Drawing Room", "Dining Room", "TV Lounge", "Kitchen", "Washroom"};
+        String[] fixedRooms = {"Living Room", "Bedroom", "Drawing Room", "Dining Room",
+                "TV Lounge", "Kitchen", "Washroom"};
+
+
+        List<String> roomOptions = new ArrayList<>();
+        Collections.addAll(roomOptions, fixedRooms);
+
+
+        for (Device d : allDevices) {
+            if (d.getRoomId() != null && !roomOptions.contains(d.getRoomId())) {
+                roomOptions.add(d.getRoomId());
+            }
+        }
+
+
+        roomOptions.add("+ Add New Room");
+
+        String[] roomArray = roomOptions.toArray(new String[0]);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Select Room");
-        builder.setItems(rooms, (dialog, which) -> {
-            String selectedRoom = rooms[which];
-            addDeviceToFirebase(category, selectedRoom);
+        builder.setItems(roomArray, (dialog, which) -> {
+            String selected = roomArray[which];
+            if (selected.equals("+ Add New Room")) {
+                showAddNewRoomDialog(category);
+            } else {
+                addDeviceToFirebase(category, selected);
+            }
         });
         builder.show();
     }
 
-    private void addDeviceToFirebase(String category, String room) {
-        String uid = FirebaseAuth.getInstance().getUid();
-        if (uid == null) return;
-        DatabaseReference dRef = FirebaseDatabase.getInstance().getReference("users").child(uid).child("devices");
-        String id = dRef.push().getKey();
-        
-        double power = 0;
-        if (category.equals("Air Condition")) power = 1.5;
-        else if (category.equals("Smart Fridge")) power = 0.5;
-        else if (category.equals("Smart TV")) power = 0.2;
-        else power = 0.05;
+    private void showAddNewRoomDialog(String category) {
 
-        Device newDevice = new Device(id, room, category, category, false, power, 1);
-        if (id != null) {
-            dRef.child(id).setValue(newDevice);
-        }
+        android.widget.EditText input = new android.widget.EditText(getContext());
+        input.setHint("Enter room name");
+        input.setPadding(50, 30, 50, 30);
+        input.setInputType(android.text.InputType.TYPE_CLASS_TEXT |
+                android.text.InputType.TYPE_TEXT_FLAG_CAP_WORDS);
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("New Room")
+                .setMessage("Enter the name of the new room:")
+                .setView(input)
+                .setPositiveButton("Add", (dialog, which) -> {
+                    String newRoom = input.getText().toString().trim();
+
+                    if (newRoom.isEmpty()) {
+                        android.widget.Toast.makeText(getContext(),
+                                "Room name cannot be empty",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+
+                    boolean alreadyExists = false;
+                    String[] fixedRooms = {"Living Room", "Bedroom", "Drawing Room",
+                            "Dining Room", "TV Lounge", "Kitchen", "Washroom"};
+                    for (String r : fixedRooms) {
+                        if (r.equalsIgnoreCase(newRoom)) {
+                            alreadyExists = true;
+                            break;
+                        }
+                    }
+                    if (!alreadyExists) {
+                        for (Device d : allDevices) {
+                            if (d.getRoomId() != null && d.getRoomId().equalsIgnoreCase(newRoom)) {
+                                alreadyExists = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (alreadyExists) {
+
+                        android.widget.Toast.makeText(getContext(),
+                                "Room already exists. Adding device to " + newRoom,
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        addDeviceToFirebase(category, newRoom);
+                    } else {
+
+                        addDeviceToFirebase(category, newRoom);
+                        android.widget.Toast.makeText(getContext(),
+                                newRoom + " created!",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    private void addDeviceToFirebase(String category, String room) {
+        showWattsInputDialog(category,room);
+    }
+    private void showWattsInputDialog(String category, String room) {
+
+        String defaultWatts;
+        if (category.equals("Air Condition"))       defaultWatts = "1500";
+        else if (category.equals("Smart Fridge"))   defaultWatts = "500";
+        else if (category.equals("Smart TV"))       defaultWatts = "200";
+        else if (category.equals("Lighting"))       defaultWatts = "60";
+        else if (category.equals("Blinds"))         defaultWatts = "50";
+        else                                         defaultWatts = "100";
+
+
+        android.widget.EditText input = new android.widget.EditText(getContext());
+        input.setHint("Enter watts (e.g. 1500)");
+        input.setText(defaultWatts);
+        input.setSelectAllOnFocus(true);
+        input.setPadding(50, 30, 50, 30);
+        input.setInputType(android.text.InputType.TYPE_CLASS_NUMBER |
+                android.text.InputType.TYPE_NUMBER_FLAG_DECIMAL);
+
+        new AlertDialog.Builder(getContext())
+                .setTitle("Power Consumption")
+                .setMessage("Enter the wattage for " + category + "\n(suggested: " + defaultWatts + "W)")
+                .setView(input)
+                .setPositiveButton("Add Device", (dialog, which) -> {
+                    String wattsStr = input.getText().toString().trim();
+
+                    if (wattsStr.isEmpty()) {
+                        android.widget.Toast.makeText(getContext(),
+                                "Please enter wattage",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    double watts;
+                    try {
+                        watts = Double.parseDouble(wattsStr);
+                    } catch (NumberFormatException e) {
+                        android.widget.Toast.makeText(getContext(),
+                                "Invalid wattage entered",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+                    if (watts <= 0) {
+                        android.widget.Toast.makeText(getContext(),
+                                "Wattage must be greater than 0",
+                                android.widget.Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
+
+                    double powerInKwh = watts / 1000.0;
+
+
+                    String uid = FirebaseAuth.getInstance().getUid();
+                    if (uid == null) return;
+                    DatabaseReference dRef = FirebaseDatabase.getInstance()
+                            .getReference("users").child(uid).child("devices");
+                    String id = dRef.push().getKey();
+
+                    Device newDevice = new Device(id, room, category, category, false, powerInKwh, 1);
+                    if (id != null) {
+                        dRef.child(id).setValue(newDevice)
+                                .addOnSuccessListener(aVoid ->
+                                        android.widget.Toast.makeText(getContext(),
+                                                category + " added to " + room,
+                                                android.widget.Toast.LENGTH_SHORT).show()
+                                );
+                    }
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
     }
 }

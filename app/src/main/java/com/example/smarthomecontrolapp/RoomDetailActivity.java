@@ -24,7 +24,7 @@ import java.util.Map;
 
 public class RoomDetailActivity extends AppCompatActivity {
 
-    TextView tvRoomTitle, tvTemperature, tvTodayCost, tvTodayBudget, tvFilterSelector;
+    TextView tvRoomTitle, tvTemperature, tvTodayCost, tvTodayBudget, tvFilterSelector, tvDevicesLabel;
     RecyclerView recyclerRoomDevices;
     DeviceAdapter deviceAdapter;
     ArrayList<Device> roomDeviceList = new ArrayList<>();
@@ -200,7 +200,7 @@ public class RoomDetailActivity extends AppCompatActivity {
         for (Device d : roomDeviceList) {
             long totalDurationToday = 0;
             
-            // Check past intervals from logs
+            // 1. Check past intervals from logs
             List<Interval> intervals = intervalsMap.get(d.getDeviceId());
             if (intervals != null) {
                 for (Interval inter : intervals) {
@@ -212,7 +212,7 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
             }
 
-            // Check current active session
+            // 2. Check current active session (Logic from fix-issues)
             if (d.isStatus()) {
                 long sessionStart = lastOn.containsKey(d.getDeviceId()) ? lastOn.get(d.getDeviceId()) : d.getLastStatusChangeTimestamp();
                 if (sessionStart < now) {
@@ -223,9 +223,13 @@ public class RoomDetailActivity extends AppCompatActivity {
                 }
             }
 
+            // 3. Final math for this device
             double hours = totalDurationToday / (1000.0 * 60.0 * 60.0);
             roomTodayKWh += (hours * d.getPowerConsumption() * Math.max(1, d.getCount()));
         }
+
+        // 4. Update the UI label (Logic from main)
+        tvDevicesLabel.setText("Devices In This Room (" + roomDeviceList.size() + ")");
 
         return roomTodayKWh;
     }

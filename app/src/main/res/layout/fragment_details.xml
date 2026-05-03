@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="btnBack,tvTitle,tabCard,chartContainer,statsContainer,tvExpensesLabel,ivExpensesChevron,rvExpenses" />
+        app:constraint_referenced_ids="btnBack,tvTitle,tabCard,chartContainer,statsContainer,tvExpensesLabel,rvExpenses" />
 
     <!-- Header -->
     <ImageView

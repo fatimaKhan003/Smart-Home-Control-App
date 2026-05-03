@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SmartHomeControlApp">
         <activity
+            android:name=".RoomDetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".register"
             android:exported="true">
             <intent-filter>
@@ -27,7 +30,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginActivity"
-           android:exported="false"/>
+            android:exported="false" />
     </application>
 
 </manifest>

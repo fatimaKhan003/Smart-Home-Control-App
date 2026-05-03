@@ -63,7 +63,7 @@ public class register extends AppCompatActivity {
     }
 
     private void attemptRegister() {
-        // Clear errors
+
         tilName.setError(null);
         tilEmail.setError(null);
         tilPassword.setError(null);
@@ -75,7 +75,7 @@ public class register extends AppCompatActivity {
         String password = etPassword.getText().toString().trim();
         String confirm  = etConfirmPassword.getText().toString().trim();
 
-        // Validate
+
         if (TextUtils.isEmpty(name)) {
             tilName.setError("Name is required");
             return;
@@ -99,21 +99,20 @@ public class register extends AppCompatActivity {
 
         setLoading(true);
 
-        // Create Firebase Auth user
+
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
                         FirebaseUser user = mAuth.getCurrentUser();
 
-                        // Step 1: Set display name on the Auth profile
+
                         UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                                 .setDisplayName(name)
                                 .build();
 
                         user.updateProfile(profileUpdates);
 
-                        // Step 2: Save user data to Realtime Database
-                        // This creates the structure: users/{uid}/name, costRate, savingsTarget
+
                         saveUserToDatabase(user.getUid(), name, email);
                     } else {
                         setLoading(false);
@@ -127,7 +126,7 @@ public class register extends AppCompatActivity {
     }
 
     private void saveUserToDatabase(String uid, String name, String email) {
-        // Build the user node in Realtime Database
+
         Map<String, Object> userMap = new HashMap<>();
         userMap.put("name", name);
         userMap.put("email", email);
@@ -139,7 +138,7 @@ public class register extends AppCompatActivity {
                 .addOnCompleteListener(task -> {
                     setLoading(false);
                     if (task.isSuccessful()) {
-                        // Go to MainActivity
+
                         Intent intent = new Intent(register.this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         startActivity(intent);

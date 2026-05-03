@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,15 +42,6 @@ public class RoomsFragment extends Fragment {
             }
         });
 
-
-        View profileCircle = view.findViewById(R.id.profileCircle);
-        profileCircle.setOnClickListener(v ->
-                getParentFragmentManager().beginTransaction()
-                        .replace(R.id.fragment_container, new ProfileFragment())
-                        .addToBackStack(null)
-                        .commit()
-        );
-
         recyclerRooms = view.findViewById(R.id.recyclerRooms);
         roomList = new ArrayList<>();
         roomAdapter = new RoomAdapter(getContext(), roomList);
@@ -64,12 +54,12 @@ public class RoomsFragment extends Fragment {
     }
 
     private void loadRooms() {
-       DatabaseReference deviceRef= FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("devices");
+       DatabaseReference deviceRef = FirebaseDatabase.getInstance().getReference("users").child(FirebaseAuth.getInstance().getUid()).child("devices");
        deviceRef.addValueEventListener(new ValueEventListener() {
            @Override
            public void onDataChange(@NonNull DataSnapshot snapshot) {
                roomList.clear();
-               String[] rooms=
+               String[] rooms =
                        {
                                "Living Room", "Bedroom","Kitchen","Washroom","Drawing Room","Dining Room","TV Lounge"
                        };
@@ -88,20 +78,16 @@ public class RoomsFragment extends Fragment {
                        }
                    }
 
-                   roomList.add(new Room("1",roomName,20.0, count));
+                   roomList.add(new Room("1", roomName, 20.0, count));
                }
 
                roomAdapter.notifyDataSetChanged();
            }
-
-
 
            @Override
            public void onCancelled(@NonNull DatabaseError error) {
 
            }
        });
-
-
     }
 }

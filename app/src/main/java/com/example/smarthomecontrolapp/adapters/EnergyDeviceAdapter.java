@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.smarthomecontrolapp.R;
 
 import java.util.List;
 import java.util.Locale;

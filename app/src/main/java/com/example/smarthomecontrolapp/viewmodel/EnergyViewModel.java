@@ -1,10 +1,14 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.viewmodel;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.smarthomecontrolapp.models.Device;
+import com.example.smarthomecontrolapp.models.LogEntry;
+import com.example.smarthomecontrolapp.models.Room;
+import com.example.smarthomecontrolapp.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

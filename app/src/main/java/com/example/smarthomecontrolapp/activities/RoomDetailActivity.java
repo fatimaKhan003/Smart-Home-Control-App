@@ -1,8 +1,7 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -13,6 +12,11 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smarthomecontrolapp.models.Device;
+import com.example.smarthomecontrolapp.adapters.DeviceAdapter;
+import com.example.smarthomecontrolapp.viewmodel.EnergyViewModel;
+import com.example.smarthomecontrolapp.models.LogEntry;
+import com.example.smarthomecontrolapp.R;
 import com.google.android.material.button.MaterialButton;
 
 import java.util.ArrayList;

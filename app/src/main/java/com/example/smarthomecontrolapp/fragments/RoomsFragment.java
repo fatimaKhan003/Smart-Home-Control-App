@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,6 +11,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smarthomecontrolapp.models.Device;
+import com.example.smarthomecontrolapp.R;
+import com.example.smarthomecontrolapp.models.Room;
+import com.example.smarthomecontrolapp.adapters.RoomAdapter;
+import com.example.smarthomecontrolapp.activities.MainActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

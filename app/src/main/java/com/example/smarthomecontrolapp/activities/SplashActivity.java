@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+
+import com.example.smarthomecontrolapp.R;
 
 public class SplashActivity extends AppCompatActivity {
 ImageView logo;
@@ -27,7 +27,7 @@ appname.startAnimation(logoAnim);
 tagline.startAnimation(textAnim);
         new Handler().postDelayed(()->
         {
-            startActivity(new Intent(SplashActivity.this,register.class));
+            startActivity(new Intent(SplashActivity.this, RegisterActivity.class));
             finish();
         },3000);
 

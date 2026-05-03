@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.fragments;
 
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,6 +17,13 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smarthomecontrolapp.models.Device;
+import com.example.smarthomecontrolapp.adapters.EnergyDeviceAdapter;
+import com.example.smarthomecontrolapp.viewmodel.EnergyViewModel;
+import com.example.smarthomecontrolapp.models.LogEntry;
+import com.example.smarthomecontrolapp.R;
+import com.example.smarthomecontrolapp.models.User;
+import com.example.smarthomecontrolapp.activities.MainActivity;
 import com.github.lzyzsd.circleprogress.ArcProgress;
 
 import java.text.SimpleDateFormat;

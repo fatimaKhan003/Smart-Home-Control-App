@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.fragments;
 
 import android.os.Bundle;
 import android.util.TypedValue;
@@ -9,19 +9,24 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.smarthomecontrolapp.models.Device;
+import com.example.smarthomecontrolapp.viewmodel.EnergyViewModel;
+import com.example.smarthomecontrolapp.models.Expense;
+import com.example.smarthomecontrolapp.adapters.ExpensesAdapter;
+import com.example.smarthomecontrolapp.models.LogEntry;
+import com.example.smarthomecontrolapp.R;
+import com.example.smarthomecontrolapp.activities.MainActivity;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;

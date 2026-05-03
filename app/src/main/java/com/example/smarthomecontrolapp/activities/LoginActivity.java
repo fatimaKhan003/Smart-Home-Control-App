@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,10 +10,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.smarthomecontrolapp.R;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -48,7 +48,7 @@ public class LoginActivity extends AppCompatActivity {
 
 
         tvGoToRegister.setOnClickListener(v -> {
-            startActivity(new Intent(LoginActivity.this, register.class));
+            startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
         });
     }
 

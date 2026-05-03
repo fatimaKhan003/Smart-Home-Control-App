@@ -1,4 +1,6 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.utils;
+
+import com.example.smarthomecontrolapp.models.User;
 
 public class TestData {
     public static final User TEST_USER = new User(

@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.utils;
 
 public enum DeviceType {
     SMART_TV("Smart TV"),

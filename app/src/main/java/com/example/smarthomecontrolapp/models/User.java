@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.models;
 
 import java.util.HashMap;
 import java.util.Map;

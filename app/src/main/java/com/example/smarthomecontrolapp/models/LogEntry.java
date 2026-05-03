@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.models;
 
 public class LogEntry {
     private String deviceId;

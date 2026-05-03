@@ -1,20 +1,22 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.activity.EdgeToEdge;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
 import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 
+import com.example.smarthomecontrolapp.fragments.DetailsFragment;
+import com.example.smarthomecontrolapp.fragments.EnergyFragment;
+import com.example.smarthomecontrolapp.fragments.HomeFragment;
+import com.example.smarthomecontrolapp.fragments.ProfileFragment;
+import com.example.smarthomecontrolapp.R;
+import com.example.smarthomecontrolapp.fragments.RoomsFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;

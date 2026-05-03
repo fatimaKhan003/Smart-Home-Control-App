@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.fragments;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
@@ -16,6 +16,13 @@ import android.widget.ProgressBar;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.smarthomecontrolapp.models.Device;
+import com.example.smarthomecontrolapp.adapters.DeviceAdapter;
+import com.example.smarthomecontrolapp.viewmodel.EnergyViewModel;
+import com.example.smarthomecontrolapp.models.LogEntry;
+import com.example.smarthomecontrolapp.R;
+import com.example.smarthomecontrolapp.activities.MainActivity;
+import com.example.smarthomecontrolapp.utils.DeviceType;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;

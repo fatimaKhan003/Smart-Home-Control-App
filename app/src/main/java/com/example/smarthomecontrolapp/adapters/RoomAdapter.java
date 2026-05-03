@@ -1,4 +1,4 @@
-package com.example.smarthomecontrolapp;
+package com.example.smarthomecontrolapp.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.smarthomecontrolapp.R;
+import com.example.smarthomecontrolapp.models.Room;
+import com.example.smarthomecontrolapp.activities.RoomDetailActivity;
 
 import java.util.List;
 

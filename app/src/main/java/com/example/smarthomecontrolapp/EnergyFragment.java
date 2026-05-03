@@ -20,6 +20,7 @@ import com.github.lzyzsd.circleprogress.ArcProgress;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -130,6 +131,15 @@ public class EnergyFragment extends Fragment {
     private void calculateAndDisplayEnergy() {
         if (allDevices.isEmpty()) return;
 
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        cal.set(Calendar.HOUR_OF_DAY, 0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.set(Calendar.MILLISECOND, 0);
+        long monthStart = cal.getTimeInMillis();
+        long now = System.currentTimeMillis();
+
         Map<String, Double> deviceTypeTotalCost = new HashMap<>();
         Map<String, Map<String, Double>> roomTypeCost = new HashMap<>(); 
 
@@ -145,14 +155,21 @@ public class EnergyFragment extends Fragment {
                 lastOnTimestamp.put(dId, log.getTimestamp());
             } else if ("TURN_OFF".equals(log.getAction())) {
                 if (lastOnTimestamp.containsKey(dId)) {
-                    long duration = log.getTimestamp() - lastOnTimestamp.get(dId);
-                    deviceTotalTimeMillis.put(dId, deviceTotalTimeMillis.getOrDefault(dId, 0L) + duration);
+                    long start = lastOnTimestamp.get(dId);
+                    long end = log.getTimestamp();
+                    
+                    long overlapStart = Math.max(monthStart, start);
+                    long overlapEnd = Math.min(now, end);
+                    
+                    if (overlapEnd > overlapStart) {
+                        long duration = overlapEnd - overlapStart;
+                        deviceTotalTimeMillis.put(dId, deviceTotalTimeMillis.getOrDefault(dId, 0L) + duration);
+                    }
                     lastOnTimestamp.remove(dId);
                 }
             }
         }
 
-        long now = System.currentTimeMillis();
         for (Device device : allDevices) {
             long totalDuration = deviceTotalTimeMillis.getOrDefault(device.getDeviceId(), 0L);
             
@@ -161,8 +178,11 @@ public class EnergyFragment extends Fragment {
                         ? lastOnTimestamp.get(device.getDeviceId()) 
                         : device.getLastStatusChangeTimestamp();
                 
-                if (sessionStart > 0 && sessionStart < now) {
-                    totalDuration += (now - sessionStart);
+                if (sessionStart < now) {
+                    long overlapStart = Math.max(monthStart, sessionStart);
+                    if (now > overlapStart) {
+                        totalDuration += (now - overlapStart);
+                    }
                 }
             }
 

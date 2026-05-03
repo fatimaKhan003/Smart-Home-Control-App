@@ -1,6 +1,5 @@
 package com.example.smarthomecontrolapp;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,7 +48,6 @@ public class ProfileFragment extends Fragment {
 
         View btnBack = view.findViewById(R.id.btnBack);
         View btnSave = view.findViewById(R.id.btnSave);
-        View btnLogout = view.findViewById(R.id.btnLogout);
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
@@ -62,7 +60,6 @@ public class ProfileFragment extends Fragment {
 
         btnSave.setOnClickListener(v -> saveSettings());
         btnBack.setOnClickListener(v -> getParentFragmentManager().popBackStack());
-        btnLogout.setOnClickListener(v -> logoutUser());
 
         return view;
     }
@@ -126,16 +123,6 @@ public class ProfileFragment extends Fragment {
             
         } catch (NumberFormatException e) {
             Toast.makeText(getContext(), "Please enter valid numbers", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    private void logoutUser() {
-        mAuth.signOut();
-        Intent intent = new Intent(getActivity(), LoginActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(intent);
-        if (getActivity() != null) {
-            getActivity().finish();
         }
     }
 }

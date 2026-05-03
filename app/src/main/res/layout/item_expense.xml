@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/iconCard"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            app:cardBackgroundColor="@color/cardStatsBackground"
+            app:cardCornerRadius="12dp"
+            app:cardElevation="0dp">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_trend_down"
+                app:tint="@color/mainAccent" />
+        </com.google.android.material.card.MaterialCardView>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="16dp"
+            android:layout_toEndOf="@id/iconCard"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvMonth"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="January"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvConsumption"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="219.4 KWH"
+                android:textColor="@color/textSecondary"
+                android:textSize="12sp" />
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:text="$250.890"
+            android:textColor="@color/textPrimary"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

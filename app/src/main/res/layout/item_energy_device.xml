@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardBackgroundColor="@color/white"
+    app:cardCornerRadius="16dp"
+    app:cardElevation="0dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tvDeviceType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lighting"
+                android:textColor="@color/textPrimary"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:gravity="end"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvSavingLabel"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Savings / Target"
+                    android:textColor="@color/textSecondary"
+                    android:textSize="10sp" />
+
+                <TextView
+                    android:id="@+id/tvDeviceSaving"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="$0.00 / $50.00"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <ProgressBar
+            android:id="@+id/deviceProgressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_marginTop="16dp"
+            android:max="10000"
+            android:progress="0"
+            android:secondaryProgress="0"
+            android:progressDrawable="@drawable/device_energy_progress_track" />
+
+    </LinearLayout>
+</com.google.android.material.card.MaterialCardView>

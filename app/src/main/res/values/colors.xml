@@ -2,4 +2,24 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="mainAccent">#4E5567</color>
+    <color name="lightAccent">#B3C1DA</color>
+    <color name="logoutRed">#FF5252</color>
+    <color name="logoutBackground">#FFEAEA</color>
+    <color name="backgroundGrey">#F8F9FA</color>
+    <color name="dividerGrey">#F1F1F1</color>
+    <color name="textPrimary">#222222</color>
+    <color name="textSecondary">#9E9E9E</color>
+    <color name="textMedium">#757575</color>
+    <color name="textDark">#242424</color>
+    <color name="iconColor">#2C2C2C</color>
+    <color name="green">#4CAF50</color>
+    <color name="tabBackground">#F1F3F5</color>
+    <color name="cardTodayCost">#C9A86A</color>
+    <color name="chartBarInactive">#F1F3F5</color>
+    <color name="chartBarActive">#4E5567</color>
+    <color name="barInactive">#D1D1D1</color>
+    <color name="barActive">#4E5567</color>
+    <color name="cardStatsBackground">#F5F7FA</color>
+    <color name="cardCostBackground">#2D3436</color>
 </resources>

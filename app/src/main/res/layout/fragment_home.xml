@@ -8,6 +8,22 @@
     android:padding="16dp"
     tools:context=".HomeFragment">
 
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/homeContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:constraint_referenced_ids="tvWelcome,tvSubtitle,expenseCard,tabLayoutRooms,recyclerDevices,fabAddDevice" />
+
+    <ProgressBar
+        android:id="@+id/loadingSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <ImageView
         android:layout_width="24dp"
         android:layout_height="24dp"
@@ -18,6 +34,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/tvHome"
         app:tint="#2C2C2C"/>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -30,15 +47,21 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-    <View
-        android:layout_width="52dp"
-        android:layout_height="52dp"
-        android:id="@+id/pprofileCircle"
+
+    <ImageView
+        android:id="@+id/profileCircle"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_marginEnd="16dp"
+        android:padding="10dp"
+        android:src="@drawable/ic_profile"
         android:background="@drawable/bg_profile_circle"
+        android:scaleType="centerInside"
         app:layout_constraintBottom_toBottomOf="@+id/tvHome"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/tvHome"/>
+        app:layout_constraintTop_toTopOf="@+id/tvHome"
+        app:tint="@color/iconColor" />
+
     <TextView
         android:id="@+id/tvWelcome"
         android:layout_width="wrap_content"
@@ -49,8 +72,7 @@
         android:textColor="#242424"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tvHome"
-        android:layout_marginTop="20dp"
-         />
+        android:layout_marginTop="20dp" />
 
     <TextView
         android:id="@+id/tvSubtitle"
@@ -62,7 +84,6 @@
         android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvWelcome" />
-
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/expenseCard"
@@ -104,8 +125,7 @@
                 app:layout_constraintBottom_toBottomOf="@id/ivFlash"
                 app:layout_constraintStart_toEndOf="@+id/ivFlash"
                 app:layout_constraintTop_toTopOf="@id/ivFlash"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
+                app:layout_constraintEnd_toEndOf="parent" />
 
             <ProgressBar
                 android:id="@+id/expenseProgress"
@@ -142,13 +162,11 @@
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 android:visibility="gone"
-                app:layout_constraintTop_toBottomOf="@+id/expenseProgress"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/expenseProgress" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Room Tabs -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabLayoutRooms"
         android:layout_width="match_parent"
@@ -159,11 +177,10 @@
         app:tabIndicatorHeight="0dp"
         app:tabMode="scrollable"
         app:tabRippleColor="@android:color/transparent"
-        app:tabSelectedTextColor="#7B61FF"
+        app:tabSelectedTextColor="@color/mainAccent"
         app:tabTextAppearance="@android:style/TextAppearance.Small"
         app:tabTextColor="#757575" />
 
-    <!-- Device Grid -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerDevices"
         android:layout_width="match_parent"
@@ -174,14 +191,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tabLayoutRooms" />
 
-    <!-- Styled FAB -->
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"
-        app:backgroundTint="#7B61FF"
+        app:backgroundTint="@color/mainAccent"
         app:elevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

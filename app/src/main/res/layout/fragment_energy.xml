@@ -1,14 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".EnergyFragment">
+    android:background="@color/backgroundGrey">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/energyContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:visibility="gone">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="24dp">
+
+            <ImageView
+                android:id="@+id/btnBack"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:rotation="180"
+                android:src="@drawable/ic_menu"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/iconColor" />
+
+            <TextView
+                android:id="@+id/tvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Energy Expenses"
+                android:textColor="@color/textPrimary"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/btnBack"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/btnBack" />
+
+            <!-- Arc Progress Section -->
+            <FrameLayout
+                android:id="@+id/arcContainer"
+                android:layout_width="280dp"
+                android:layout_height="150dp"
+                android:layout_marginTop="32dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tvTitle">
+
+                <com.github.lzyzsd.circleprogress.ArcProgress
+                    android:id="@+id/arcProgressBar"
+                    android:layout_width="280dp"
+                    android:layout_height="280dp"
+                    android:layout_gravity="top|center_horizontal"
+                    app:arc_angle="180"
+                    app:arc_bottom_text=""
+                    app:arc_finished_color="@color/mainAccent"
+                    app:arc_max="10000"
+                    app:arc_progress="0"
+                    app:arc_stroke_width="15dp"
+                    app:arc_text_color="@android:color/transparent"
+                    app:arc_unfinished_color="@color/dividerGrey"
+                    tools:arc_progress="6000" />
+
+                <!-- Central Expenses Info positioned inside the arc area -->
+                <LinearLayout
+                    android:id="@+id/expensesCenterInfo"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginBottom="10dp"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Expenses"
+                        android:textColor="@color/textSecondary"
+                        android:textSize="12sp" />
+
+                    <TextView
+                        android:id="@+id/tvTotalExpenses"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/textPrimary"
+                        android:textSize="32sp"
+                        android:textStyle="bold"
+                        tools:text="$205.83" />
+
+                    <TextView
+                        android:id="@+id/tvBudgetStatus"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:textColor="@color/green"
+                        android:textSize="14sp"
+                        android:textStyle="bold"
+                        tools:text="Good" />
+                </LinearLayout>
+            </FrameLayout>
+
+            <!-- Side Readings ($0 and Max Budget) moved below the arcContainer -->
+            <RelativeLayout
+                android:id="@+id/arcLabelsContainer"
+                android:layout_width="280dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/arcContainer">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:text="$0"
+                    android:textColor="@color/textSecondary"
+                    android:textSize="12sp" />
+
+                <TextView
+                    android:id="@+id/tvMaxBudget"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:text=""
+                    android:textColor="@color/textSecondary"
+                    android:textSize="12sp"
+                    tools:text="$500.00" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tvCurrentDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text=""
+                android:textColor="@color/textSecondary"
+                android:textSize="12sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/arcLabelsContainer"
+                tools:text="28 February 2022" />
+
+            <!-- Savings vs Savings Target Card -->
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/savingsCard"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="0dp"
+                app:layout_constraintTop_toBottomOf="@id/tvCurrentDate">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Savings"
+                            android:textColor="@color/textSecondary"
+                            android:textSize="12sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text="Savings Target"
+                            android:textColor="@color/textSecondary"
+                            android:textSize="12sp" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp">
+
+                        <TextView
+                            android:id="@+id/tvSavingsValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/textPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="$205.83" />
+
+                        <TextView
+                            android:id="@+id/tvSavingsTargetValue"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:text=""
+                            android:textColor="@color/textPrimary"
+                            android:textSize="18sp"
+                            android:textStyle="bold"
+                            tools:text="$500.00" />
+                    </RelativeLayout>
+
+                    <ProgressBar
+                        android:id="@+id/savingsProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp"
+                        android:layout_marginTop="16dp"
+                        android:max="10000"
+                        android:progress="0"
+                        android:progressDrawable="@drawable/energy_progress_track"
+                        tools:progress="4000" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- Devices Section -->
+            <RelativeLayout
+                android:id="@+id/devicesHeader"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="32dp"
+                app:layout_constraintTop_toBottomOf="@id/savingsCard">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="Devices"
+                    android:textColor="@color/textPrimary"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <com.google.android.material.card.MaterialCardView
+                    android:id="@+id/roomFilterCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    app:cardBackgroundColor="@color/dividerGrey"
+                    app:cardCornerRadius="12dp"
+                    app:cardElevation="0dp">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="12dp"
+                        android:paddingVertical="6dp">
+
+                        <TextView
+                            android:id="@+id/tvSelectedRoom"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/textMedium"
+                            android:textSize="12sp"
+                            tools:text="Bedroom" />
+
+                        <ImageView
+                            android:layout_width="16dp"
+                            android:layout_height="16dp"
+                            android:layout_marginStart="4dp"
+                            android:src="@drawable/ic_chevron_down"
+                            app:tint="@color/iconColor" />
+                    </LinearLayout>
+                </com.google.android.material.card.MaterialCardView>
+            </RelativeLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvEnergyDevices"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:nestedScrollingEnabled="false"
+                app:layout_constraintTop_toBottomOf="@id/devicesHeader"
+                tools:listitem="@layout/item_energy_device" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <ProgressBar
+        android:id="@+id/loadingSpinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center" />
 
 </FrameLayout>

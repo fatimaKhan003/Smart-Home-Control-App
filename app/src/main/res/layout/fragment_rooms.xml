@@ -1,14 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#F8F9FA"
+    android:padding="16dp"
     tools:context=".RoomsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
-</FrameLayout>
+    <ImageView
+        android:id="@+id/ivMenu"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_menu"
+        app:tint="#2C2C2C"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvScreenTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvScreenTitle"/>
+
+
+    <TextView
+        android:id="@+id/tvScreenTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Rooms"
+        android:textColor="#222222"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+
+    <View
+        android:id="@+id/profileCircle"
+        android:layout_width="52dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/bg_profile_circle"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/tvScreenTitle"
+        app:layout_constraintBottom_toBottomOf="@+id/tvScreenTitle"/>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerRooms"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="16dp"
+        android:clipToPadding="false"
+        android:paddingBottom="80dp"
+        app:layout_constraintTop_toBottomOf="@id/tvScreenTitle"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

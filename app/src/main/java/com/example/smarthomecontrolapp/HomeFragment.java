@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
@@ -62,8 +63,15 @@ public class HomeFragment extends Fragment {
         
         View fabAdd = view.findViewById(R.id.fabAddDevice);
         View profileCircle = view.findViewById(R.id.profileCircle);
-
-        fabAdd.setOnClickListener(v -> showAddDeviceDialog());
+        ImageView ivMenu=view.findViewById(R.id.ivMenu);
+        ivMenu.setOnClickListener(v->
+        {
+            if(getActivity() instanceof MainActivity)
+            {
+                ((MainActivity)getActivity()).openDrawer();
+            }
+        });
+        fabAdd.setOnClickListener(v->showAddDeviceDialog());
         profileCircle.setOnClickListener(v -> {
             getParentFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, new ProfileFragment())
